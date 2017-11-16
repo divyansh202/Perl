@@ -7,6 +7,7 @@ use Exporter qw(import);
 our @EXPORT_OK = qw(run_main);
 
 my %phonebook;
+my %email;
 
 #sub run_main {
     while (1) {
@@ -50,7 +51,10 @@ sub addEntry{
     } else {
         print "\nEnter phone number: ";
         chomp(my $phone = <STDIN>);
+		 print "\nEnter E-mail: ";
+        chomp(my $mail = <STDIN>);
         $phonebook{$name} = $phone;
+		$email{$name} = $mail;
     }
 }
 ################################################################################
@@ -60,6 +64,7 @@ sub searchEntry{
     $searchname = lc($searchname);
     if(exists($phonebook{$searchname})){
         print "\nPhone Number : ".($phonebook{$searchname})."\n";
+		 print "\nE-mail : ".($email{$searchname})."\n";
     } else {
         print "\nEntry doesnt exists.\n";
     }
@@ -71,6 +76,7 @@ sub deleteEntry{
     $delname = lc($delname);
     if(exists($phonebook{$delname})){
         delete($phonebook{$delname});
+		delete($email{$delname});
         print "\nThe name and phone have been deleted.\n";
     } else {
         print "\nThere is no such name in phone book.\n";
@@ -78,10 +84,10 @@ sub deleteEntry{
 }
 ############################################################################
 sub showEntry{
-	print "\n\t   Name \t Contact\n";
+	print "\n\t   Name \t Contact\tE-mail\n";
 	my $i = 1;
     while((my $key, my $value) = each(%phonebook)){
-        print "\n\t$i. $key\t$value\n";
+        print "\n\t$i. $key\t$value\t$email{$key}\n";
 		$i++;
     }
 }
@@ -90,13 +96,18 @@ sub updateEntry{
     chomp(my $searchname = <STDIN>);
     $searchname = lc($searchname);
     if(exists($phonebook{$searchname})){
+		delete($phonebook{$searchname});
+		delete($email{$searchname});
 		print "\nUpdate Name: ";
 		chomp(my $name = <STDIN>);
 		$name = lc($name);
 		print "\nUpdate phone number: ";
 		chomp(my $phone = <STDIN>);
 		$phonebook{$name} = $phone;
-		delete($phonebook{$searchname});
+		print "\nUpdate E-mail: ";
+		chomp(my $mail = <STDIN>);
+		$email{$name} = $mail;
+		
 		print "\nEntry updated successfully\n";
 		}
         
